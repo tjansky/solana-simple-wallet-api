@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as walletService from "../services/walletService";
+import { getTokenBalancesForAddress } from "../services/tokenService";
 
 export const getAllWallets = async (_req: Request, res: Response): Promise<void> => {
   try {
@@ -27,3 +28,15 @@ export const addWallet = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: "Failed to add wallet" });
   }
 };
+
+export const getWalletBalances = async (req: Request, res: Response): Promise<void> => {
+    const { address } = req.params;
+  
+    try {
+      const balances = await getTokenBalancesForAddress(address);
+      res.status(200).json(balances);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Failed to fetch balances" });
+    }
+  };

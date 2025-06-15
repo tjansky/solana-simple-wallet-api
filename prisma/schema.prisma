@@ -10,6 +10,31 @@ datasource db {
 model WalletAddress {
   id        String   @id @default(uuid())
   address   String   @unique
+  balances  TokenBalance[]
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TokenBalance {
+  id        String   @id @default(uuid())
+  wallet    WalletAddress @relation(fields: [walletId], references: [id])
+  walletId  String
+  mint      String
+  amount    Float
+  decimals  Int
+  updatedAt DateTime @updatedAt
+}
+
+model TokenMetadata {
+  mint      String   @id
+  symbol    String
+  name      String
+  decimals  Int
+  logoURI   String?
+}
+
+model TokenPrice {
+  mint      String   @id
+  usd       Float
   updatedAt DateTime @updatedAt
 }
