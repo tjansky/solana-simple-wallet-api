@@ -8,6 +8,7 @@ export const getTokenBalancesForAddress = async (address: string) => {
 
   if (!wallet) throw new Error("Wallet not found");
 
+  // Todo - no need to fetch all prices and metadata
   const prices = await prisma.tokenPrice.findMany();
   const metadata = await prisma.tokenMetadata.findMany();
 
