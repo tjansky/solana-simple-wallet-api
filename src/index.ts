@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import walletRoutes from "./routes/walletRoutes";
-import "./cron/tokenCron";
+// import './cron/scheduler'
 
 dotenv.config();
 
