@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import walletRoutes from "./routes/walletRoutes";
-// import './cron/scheduler'
+// import './cron/scheduler' - commented so cron does not auto start
 
 dotenv.config();
 
