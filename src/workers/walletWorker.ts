@@ -9,9 +9,10 @@ new Worker(
   "wallet-sync",
   async (job) => {
     console.log("👷‍♂️ Worker started: wallet-sync");
+    const id = job.data.id;
     const address = job.data.address;
     if (!address) throw new Error("Missing address");
-    await syncBalanceForWallet(address);
+    await syncBalanceForWallet(id, address);
   },
   { connection, concurrency: 3 }
 );

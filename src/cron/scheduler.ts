@@ -6,7 +6,7 @@ import { priceQueue } from "../queues/priceQueue";
 cron.schedule("*/2 * * * *", async () => {
   const wallets = await prisma.walletAddress.findMany();
   for (const w of wallets) {
-    await walletQueue.add("sync", { address: w.address });
+    await walletQueue.add("sync", { id: w.id, address: w.address });
   }
   console.log(`📬 Queued ${wallets.length} wallet jobs`);
 });
