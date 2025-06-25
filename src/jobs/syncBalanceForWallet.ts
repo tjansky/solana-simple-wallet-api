@@ -4,40 +4,40 @@ import prisma from "../db/client";
 const connection = new Connection(process.env.SOLANA_RPC_URL!, "confirmed");
 
 export const syncBalanceForWallet = async (id: string, address: string) => {
-  console.log("Sync started - balance for wallets");
+  console.log(`Sync started for wallet ${address}`);
+
   const pubkey = new PublicKey(address);
 
-  // 1. SOL balans
+  // 1. Sync native SOL balance
   let sol = 0;
   try {
     const solLamports = await connection.getBalance(pubkey);
     sol = solLamports / 1e9;
+
+    const existingSol = await prisma.tokenBalance.findFirst({
+      where: { walletId: id, mint: "SOL" },
+    });
+
+    if (existingSol) {
+      await prisma.tokenBalance.update({
+        where: { id: existingSol.id },
+        data: { amount: sol, decimals: 9 },
+      });
+    } else {
+      await prisma.tokenBalance.create({
+        data: {
+          walletId: id,
+          mint: "SOL",
+          amount: sol,
+          decimals: 9,
+        },
+      });
+    }
   } catch (err: any) {
-    console.error(`❌ Failed to get SOL balance for ${address}:`, err.message);
-    return; // refactor try catch
+    console.error(`Failed to sync SOL for ${address}:`, err.message);
   }
 
-  const existingSol = await prisma.tokenBalance.findFirst({
-    where: { walletId: id, mint: "SOL" },
-  });
-
-  if (existingSol) {
-    await prisma.tokenBalance.update({
-      where: { id: existingSol.id },
-      data: { amount: sol, decimals: 9 },
-    });
-  } else {
-    await prisma.tokenBalance.create({
-      data: {
-        walletId: id,
-        mint: "SOL",
-        amount: sol,
-        decimals: 9,
-      },
-    });
-  }
-
-  // 2. SPL tokeni
+  // 2. Sync SPL tokens
   try {
     const tokens = await connection.getParsedTokenAccountsByOwner(pubkey, {
       programId: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
@@ -74,7 +74,7 @@ export const syncBalanceForWallet = async (id: string, address: string) => {
       }
     }
   } catch (err: any) {
-    console.error(`Error syncing SPL tokens for ${address}:`, err.message);
+    console.error(`Failed to sync SPL tokens for ${address}:`, err.message);
   }
 
   console.log(`Wallet sync complete: ${address}`);
