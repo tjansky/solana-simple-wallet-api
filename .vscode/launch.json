@@ -4,10 +4,31 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch with ts-node",
+      "name": "🔵 API Server (index.ts)",
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["${workspaceFolder}/src/index.ts"],
       "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🟡 Wallet Worker (walletWorker.ts)",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${workspaceFolder}/src/workers/walletWorker.ts"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "⏱ Wallet Cron (walletCron.ts)",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${workspaceFolder}/src/cron/walletCron.ts"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**"]
     }
   ]
