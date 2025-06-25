@@ -1,5 +1,5 @@
 import { Worker } from "bullmq";
-import { connection } from "../queues/walletQueue";
+import { connection } from "../queues/priceQueue";
 import { syncTokenPrice } from "../jobs/syncTokenPrice";
 
 new Worker(
@@ -9,5 +9,5 @@ new Worker(
     if (!mint) throw new Error("Missing mint");
     await syncTokenPrice(mint);
   },
-  { connection, concurrency: 5 }
+  { connection, concurrency: 1 }
 );

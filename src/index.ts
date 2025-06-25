@@ -3,6 +3,7 @@ import { ExpressAdapter } from "@bull-board/express";
 import { createBullBoard } from "@bull-board/api";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { walletQueue } from "./queues/walletQueue";
+import { priceQueue } from "./queues/priceQueue";
 import dotenv from "dotenv";
 import walletRoutes from "./routes/walletRoutes";
 // import './cron/scheduler' - commented so cron does not auto start
@@ -16,7 +17,7 @@ const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath("/admin/queues");
 
 createBullBoard({
-  queues: [new BullMQAdapter(walletQueue)],
+  queues: [new BullMQAdapter(walletQueue), new BullMQAdapter(priceQueue)],
   serverAdapter,
 });
 
