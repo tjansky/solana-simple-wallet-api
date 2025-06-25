@@ -11,15 +11,15 @@ cron.schedule("*/2 * * * *", async () => {
   console.log(`📬 Queued ${wallets.length} wallet jobs`);
 });
 
-cron.schedule("*/1 * * * *", async () => {
-  const tokenMints = await prisma.tokenBalance.findMany({
-    distinct: ["mint"],
-    select: { mint: true },
-  });
+// cron.schedule("*/1 * * * *", async () => {
+//   const tokenMints = await prisma.tokenBalance.findMany({
+//     distinct: ["mint"],
+//     select: { mint: true },
+//   });
 
-  for (const t of tokenMints) {
-    await priceQueue.add("sync", { mint: t.mint });
-  }
+//   for (const t of tokenMints) {
+//     await priceQueue.add("sync", { mint: t.mint });
+//   }
 
-  console.log(`📈 Queued ${tokenMints.length} price jobs`);
-});
+//   console.log(`📈 Queued ${tokenMints.length} price jobs`);
+// });

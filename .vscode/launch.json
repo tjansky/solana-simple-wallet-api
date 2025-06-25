@@ -24,9 +24,9 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "⏱ Wallet Cron (walletCron.ts)",
+      "name": "⏱ Scheduler Cron",
       "runtimeArgs": ["-r", "ts-node/register"],
-      "args": ["${workspaceFolder}/src/cron/walletCron.ts"],
+      "args": ["${workspaceFolder}/src/cron/scheduler.ts"],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**"]
